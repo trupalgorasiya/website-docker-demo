@@ -4,17 +4,17 @@ pipeline {
     environment {  
         AWS_REGION = 'ap-south-1'  
         ECR_REPO = 'website-docker-demo'  
-        AWS_ACCOUNT_ID = "080777914966"
+        AWS_ACCOUNT_ID = '080777914966'  
         IMAGE_TAG = "${env.BUILD_NUMBER}"  
         IMAGE_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${IMAGE_TAG}"  
         LATEST_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:latest"  
-        DEPLOY_SERVER = '15.206.117.242'
+        DEPLOY_SERVER = '13.201.30.140'  
     }  
   
     stages {  
         stage('Checkout') {  
             steps {  
-                git branch: 'main', url: 'https://github.com/trupalgorasiya/website-docker-demo.git'  
+                git branch: 'main', url: 'https://github.com/YOUR_GITHUB_USERNAME/website-docker-demo.git'  
             }  
         }  
   
@@ -36,7 +36,9 @@ pipeline {
         stage('Login to ECR') {  
             steps {  
                 sh '''  
-                    aws ecr get-login-password --region $AWS_REGION |docker login --username AWS --password-stdin  $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com  
+                    aws ecr get-login-password --region $AWS_REGION | \  
+                    docker login --username AWS --password-stdin \  
+                    $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com  
                 '''  
             }  
         }  
